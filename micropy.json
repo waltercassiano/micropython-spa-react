@@ -1,0 +1,19 @@
+{
+    "name": "backend",
+    "stubs": {
+        "esp32-micropython-1.11.0": "1.2.0"
+    },
+    "dev-packages": {
+        "micropy-cli": "*"
+    },
+    "packages": {
+        "micropython-ulogging": "*",
+        "micropython-mimetypes": "*",
+        "network": "*",
+        "picoweb": "*"
+    },
+    "config": {
+        "vscode": true,
+        "pylint": true
+    }
+}

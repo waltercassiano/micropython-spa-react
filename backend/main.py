@@ -4,6 +4,13 @@ import picoweb
 import ulogging as logging
 import ure as re
 import mimes
+import utils
+import ujson
+import app_esp
+
+app_esp.config_service.save_config_wifi("n", "a")
+app_esp.config_service.get_config_wifi()
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -19,16 +26,14 @@ ap_ssid = 'react-iot'
 ap_password = '123456'
 
 # Wifi Setup
-wifi_ssid = ""
-wifi_passowrd = ""
+wifi_ssid = "net_ss"
+wifi_passowrd = "cassianos_8177"
 
 
 def do_connect_ap():
     if not ap.isconnected():
         ap.active(True)
         ap.config(essid=ap_ssid, password=ap_password)
-    print('network config:', ap.ifconfig())
-    
 
 def do_connect_wifi():
     if not sta_if.isconnected():
@@ -67,19 +72,19 @@ def static_files_gzip(req, resp):
         headers += b"Content-Encoding: gzip\r\n"
 
     yield from app.sendfile(resp, file_path, file_mime_type, headers)
-    
+
 ROUTES = [
     ("/", lambda req, resp: (yield from app.sendfile(resp, "/build/index.html.gz", "text/html", b"Content-Encoding: gzip\r\n" ))),
     (re.compile('^\/(.+\.css)$'), static_files_gzip),
     (re.compile('^\/(.+\.js)$'), static_files_gzip),
-    (re.compile('^\/(.+\.png|.+\.jpeg|.+\.svg)$'), static_files_gzip) 
+    (re.compile('^\/(.+\.png|.+\.jpeg|.+\.svg)$'), static_files_gzip)
 ]
 app = picoweb.WebApp(__name__, ROUTES)
 
 def run_rest(ip):
     app.run(host=ip, debug=1)
 
-# Setup WIFI 
+# Setup WIFI
 # do_connect_wifi()
 
 do_connect_ap()
@@ -90,6 +95,6 @@ if sta_if.isconnected() == True:
     webapp_ip = getIpEspServerEsp(sta_if.ifconfig())
 
 if ap.isconnected() == True:
-    webapp_ip = getIpEspServerEsp(ap.ifconfig())   
+    webapp_ip = getIpEspServerEsp(ap.ifconfig())
 
 run_rest(webapp_ip)

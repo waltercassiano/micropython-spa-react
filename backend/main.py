@@ -4,12 +4,7 @@ import picoweb
 import ulogging as logging
 import ure as re
 import mimes
-import utils
-import ujson
 import app_esp
-
-app_esp.config_service.save_config_wifi("n", "a")
-app_esp.config_service.get_config_wifi()
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -26,8 +21,8 @@ ap_ssid = 'react-iot'
 ap_password = '123456'
 
 # Wifi Setup
-wifi_ssid = "net_ss"
-wifi_passowrd = "cassianos_8177"
+wifi_ssid = ""
+wifi_passowrd = ""
 
 
 def do_connect_ap():

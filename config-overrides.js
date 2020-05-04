@@ -1,7 +1,10 @@
 const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = function override(config, env) {
-
+  if (env !== "prod") {
+    return config;
+  }
+  
   config.optimization = {
     splitChunks: {
       // chunks: 'all',

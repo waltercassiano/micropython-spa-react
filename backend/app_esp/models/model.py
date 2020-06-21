@@ -2,21 +2,20 @@ import ujson
 class Model:
     db = None
 
-    def insert(self, schema, value, serialize=True):
-        if serialize is True:
-            value = ujson.dumps(value)
-        self.db.setItem(schema, value)
+    def insert(self, schema, key, value):
+        item_to_save = dict()
+        if self.schema_exists(schema):
+            item_to_save = self.get(schema)
 
-    def get(self, schema, unserialize=True):
+        item_to_save[key] = value
+        self.db.setItem(schema, ujson.dumps(item_to_save))
+
+    def get(self, schema):
         if not self.schema_exists(schema):
             return None
-
-        if unserialize is True:
-           return ujson.loads(self._get(schema))
-        return self._get(schema)
-
-    def _get(self, key):
-        return self.db.getItem(key)
+        return ujson.loads(self.db.getItem(schema))
 
     def schema_exists(self, schema):
-        return self._get(schema) is not None
+        return self.db.getItem(schema) is not None
+
+

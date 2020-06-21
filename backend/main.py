@@ -3,12 +3,14 @@ import network
 import picoweb
 import ulogging as logging
 import ure as re
-import mimes
-import app_esp
+from mimes import mime_content_type
+from app_esp import config_service, user_service
 
 logging.basicConfig(level=logging.DEBUG)
 
-
+user_service.add_user("teste", "123")
+user_service.add_user("teste2s", "1223")
+user_service.auth_user("teste", "123")
 # Networks WIFI and acess point
 sta_if = network.WLAN(network.STA_IF)
 ap = network.WLAN(network.AP_IF)
@@ -21,8 +23,8 @@ ap_ssid = 'react-iot'
 ap_password = '123456'
 
 # Wifi Setup
-wifi_ssid = ""
-wifi_passowrd = ""
+wifi_ssid = "net_ss"
+wifi_passowrd = "cassianos_8177"
 
 
 def do_connect_ap():
@@ -34,11 +36,9 @@ def do_connect_wifi():
     if not sta_if.isconnected():
         sta_if.active(True)
         sta_if.connect(wifi_ssid, wifi_passowrd)
-    print('network config:', sta_if.ifconfig())
 
 def getIpEspServerEsp(ifconfig):
     ifconfiglist = list(ifconfig)
-    print('Webapp Server ip:', str(ifconfiglist[0]))
     return str(ifconfiglist[0])
 
 def wait_connect():
@@ -60,7 +60,7 @@ def qs_parse(qs):
 ## ----- PICOWEB
 def static_files_gzip(req, resp):
     file_path = "build/" + req.url_match.group(1)
-    file_mime_type = mimes.mime_content_type(file_path)
+    file_mime_type = mime_content_type(file_path)
     headers = b"Cache-Control: max-age=86400\r\n"
     if b"gzip" in req.headers.get(b"Accept-Encoding", b""):
         file_path += ".gz"
@@ -68,8 +68,13 @@ def static_files_gzip(req, resp):
 
     yield from app.sendfile(resp, file_path, file_mime_type, headers)
 
+def handle_api_request(req, resp):
+    print(req)
+    print(resp)
+
 ROUTES = [
     ("/", lambda req, resp: (yield from app.sendfile(resp, "/build/index.html.gz", "text/html", b"Content-Encoding: gzip\r\n" ))),
+    ("/api/^\/(.+)$", handle_api_request),
     (re.compile('^\/(.+\.css)$'), static_files_gzip),
     (re.compile('^\/(.+\.js)$'), static_files_gzip),
     (re.compile('^\/(.+\.png|.+\.jpeg|.+\.svg)$'), static_files_gzip)
@@ -80,9 +85,9 @@ def run_rest(ip):
     app.run(host=ip, debug=1)
 
 # Setup WIFI
-# do_connect_wifi()
+do_connect_wifi()
 
-do_connect_ap()
+# do_connect_ap()
 wait_connect()
 
 

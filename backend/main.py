@@ -23,8 +23,8 @@ ap_ssid = 'react-iot'
 ap_password = '123456'
 
 # Wifi Setup
-wifi_ssid = "net_ss"
-wifi_passowrd = "cassianos_8177"
+wifi_ssid = ""
+wifi_passowrd = ""
 
 
 def do_connect_ap():

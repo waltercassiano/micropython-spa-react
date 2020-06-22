@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField'
 import "./Login.css"
 import { Paper, Grid, Button, Switch, Box } from "@material-ui/core";
+import axios from "axios";
+import { CLIENT_ID, basicAuth } from "../helpers/constants";
 
 export default class Login extends Component {
 
@@ -21,7 +23,19 @@ export default class Login extends Component {
     }
 
     handleDoLogin = () => {
-        console.log("do login")
+
+        axios({
+            method: 'get',
+            url: '/api/access-token',
+            headers: {
+                clientId: CLIENT_ID,
+                Authorization: basicAuth(),
+                username: this.state.username,
+                pwd: this.state.pwd
+            }
+        })
+        .then((e) => console.log(e))
+        .catch((e) => console.log(e))
     }
 
     handleInputChange = (inputName, event) => {
@@ -29,6 +43,16 @@ export default class Login extends Component {
             [inputName]: event.target.value
         });
     }
+
+    isButtonEnabled = ({username, pwd}) => {
+        console.log(username, pwd)
+        if ((!username || !pwd) || (username.length === 0 || pwd.length === 0)) {
+            return true;
+        }
+
+        return false;
+    }
+
 
     render() {
         return (
@@ -70,7 +94,7 @@ export default class Login extends Component {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button fullWidth={true} size="large" variant="contained" color="primary" onClick={this.handleDoLogin} color="default">
+                                    <Button disabled={this.isButtonEnabled(this.state)} fullWidth={true} size="large" variant="contained" color="primary" onClick={this.handleDoLogin}>
                                         Login
                                     </Button>
                                 </Grid>

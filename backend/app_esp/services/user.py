@@ -8,7 +8,8 @@ class UserService:
     def auth_user(self, user_name_to_auth, user_password):
         user = self.user_model.getUserById(user_name=user_name_to_auth)
         if user and user.get("name") == user_name_to_auth and user.get("pwd") == user_password:
-            print("autenticado ======================================================")
+            return True
+        return False
 
 
     def add_user(self, user_id, pwd):

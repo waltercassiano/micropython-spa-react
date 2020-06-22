@@ -9,7 +9,8 @@ class UserModel(Model):
 
     def getUserById(self, user_name=None, schema="users"):
         users = super().get(schema)
-        if users and users[user_name]:
-            return users[user_name]
+
+        if users and users.get(user_name):
+            return users.get(user_name)
         return None
 

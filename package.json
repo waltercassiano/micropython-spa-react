@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build && mv build ./backend/.",
+    "build": "react-app-rewired build && rm -R ./backend/build && mv build ./backend/.",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
   },

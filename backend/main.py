@@ -6,10 +6,15 @@ import ure as re
 from mimes import mime_content_type
 from app_esp import config_service, user_service
 import ubinascii
+import utils
+import ujson
 
 logging.basicConfig(level=logging.DEBUG)
 
 user_service.add_user("admin", "123456")
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 # Networks WIFI and acess point
 sta_if = network.WLAN(network.STA_IF)
@@ -26,10 +31,10 @@ webapp_ip = ""
 ap_ssid = 'react-iot'
 ap_password = '123456'
 
+
 # Wifi Setup
 wifi_ssid = ""
 wifi_passowrd = ""
-
 
 def do_connect_ap():
     if not ap.isconnected():
@@ -47,21 +52,14 @@ def getIpEspServerEsp(ifconfig):
 
 def wait_connect():
     while True:
-        if sta_if.isconnected() == True:
+        if sta_if.isconnected() is True:
             break
-        if ap.isconnected() == True:
+        if ap.isconnected() is True:
             break
 
-def qs_parse(qs):
-    parameters = {}
-    ampersandSplit = qs.split("&")
+def getWifi(wifiListDetected):
+    return list(map(lambda wifi: utils.decode(wifi[0]), wifiListDetected))
 
-    for element in ampersandSplit:
-        equalSplit = element.split("=")
-        parameters[equalSplit[0]] = equalSplit[1]
-    return parameters
-
-## ----- PICOWEB
 app = picoweb.WebApp(__name__, routes=None, serve_static=None)
 
 def require_auth(func):
@@ -114,17 +112,26 @@ def frontend(req, resp):
 def run_rest(ip):
     app.run(host=ip, debug=1)
 
-# Setup WIFI
-do_connect_wifi()
+@app.route("/")
+def serve_spa_frontend(req, resp):
+    yield from app.sendfile(resp, "/build/index.html.gz", "text/html", b"Content-Encoding: gzip\r\n")
 
-# do_connect_ap()
+@app.route("/api/config/wifi")
+def route_api(req, resp):
+    yield from picoweb.start_response(resp)
+    yield from resp.awrite(ujson.dumps(getWifi(sta_if.scan())))
+
+
+# Setup WIFI
+# do_connect_wifi()
+do_connect_ap()
 wait_connect()
 
-
-if sta_if.isconnected() == True:
+if sta_if.isconnected() is True:
     webapp_ip = getIpEspServerEsp(sta_if.ifconfig())
 
 if ap.isconnected() == True:
     webapp_ip = getIpEspServerEsp(ap.ifconfig())
 
-run_rest(webapp_ip)
+if __name__ == "__main__":
+    app.run(host=webapp_ip, port=3000, debug=1)

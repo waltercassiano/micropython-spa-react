@@ -24,13 +24,15 @@ class Mydb:
             self.log.error("Database error on save")
 
 
+
     def getItem(self, key):
         try:
             value = self.db[key.encode()]
             self.log.info("Key recovered with sucess: key: %s - value: %s", key, value.decode())
             return value.decode()
         except Exception:
-            self.log.error("Database error on get: " + key.encode())
+            self.log.error("Database error on get: %s", key.encode())
+            return None
 
     def close(self):
         self.db.close()

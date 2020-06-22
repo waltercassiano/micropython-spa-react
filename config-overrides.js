@@ -1,10 +1,9 @@
 const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = function override(config, env) {
-  if (env !== "prod") {
-    return config;
+  if (env !== "production") {
+    return config
   }
-  
   config.optimization = {
     splitChunks: {
       // chunks: 'all',
@@ -28,7 +27,7 @@ module.exports = function override(config, env) {
   const plugins = [];
 
   config.plugins.forEach(plugin => {
-    // Remove some plugins 
+    // Remove some plugins
     if (
       // plugin.constructor.name === "HtmlWebpackPlugin" ||
       // plugin.constructor.name === "InlineChunkHtmlPlugin" ||
@@ -52,7 +51,7 @@ module.exports = function override(config, env) {
     test: /\.js$|\.css$|\.html|\.svg|\.png|\.jpg|\.jpeg$/
   }))
 
-  
+
   config.plugins = plugins;
   return config
 }

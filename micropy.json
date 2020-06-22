@@ -10,7 +10,8 @@
         "micropython-ulogging": "*",
         "micropython-mimetypes": "*",
         "network": "*",
-        "picoweb": "*"
+        "picoweb": "*",
+        "ubinascii": "*"
     },
     "config": {
         "vscode": true,

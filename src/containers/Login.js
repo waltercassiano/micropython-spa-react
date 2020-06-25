@@ -26,7 +26,7 @@ export default class Login extends Component {
 
         axios({
             method: 'get',
-            url: '/api/access-token',
+            url: 'http://10.1.1.12:3000/api/access-token',
             headers: {
                 clientId: CLIENT_ID,
                 Authorization: basicAuth(),

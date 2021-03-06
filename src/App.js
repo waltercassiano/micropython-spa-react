@@ -3,12 +3,12 @@ import './App.css';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
-import Login from './containers/Login';
+import { Route } from "react-router-dom";
+import Login from './containers/Login/Login';
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
+import Home from './containers/Home/Home';
 
 class App extends Component {
 
@@ -19,7 +19,7 @@ class App extends Component {
 
 
     return (
-      <AppBar   position="fixed" color="primary">
+      <AppBar position="fixed" color="primary">
           <Toolbar>
             <IconButton edge="start" color="inherit" aria-label="menu">
               <MenuIcon />
@@ -45,13 +45,10 @@ class App extends Component {
           className="root-grid"
 
         >
-          <Router>
-            <Switch>
-              <Route path="/">
-                <Login />
-              </Route>
-            </Switch>
-          </Router>
+
+              <Route path="/" exact component={Login} />
+              <Route path="/home" component={Home} />
+
         </Grid>
       </Fragment>
     );

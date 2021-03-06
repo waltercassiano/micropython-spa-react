@@ -1,3 +1,4 @@
+micropython-uasyncio
 micropython-ulogging
 network
 picoweb

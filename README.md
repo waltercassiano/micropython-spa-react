@@ -2,7 +2,7 @@
 IOT - Esp32 Micropython using a SPA - React
 This project use [create-react-app - CRA](https://github.com/facebook/create-react-app)
 
-# Requirements 
+# Requirements
 - Nodes v10
 - Yarn
 - Python3
@@ -15,7 +15,7 @@ Folders:
 
 - backend -> here are boot.py and main.py. This is the sync_folder to esp32.
 - build -> production version, copied to backend folder when react build
-- src -> Frontend React Application 
+- src -> Frontend React Application
 
 # Commands
 #### Command available on root to react:
@@ -28,6 +28,10 @@ Folders:
 
 Should use the Vscode Extension.
 Before each upload you need build frontend.
+
+### Frontend Live Reload
+- Change to true CORS_ENABLED in main.py
+-
 
 ### TODO
 

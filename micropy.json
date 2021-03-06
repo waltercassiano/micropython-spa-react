@@ -1,17 +1,18 @@
 {
     "name": "backend",
     "stubs": {
-        "esp32-micropython-1.11.0": "1.2.0"
+        "esp32-micropython-1.11.0": "1.2.0",
+        "esp32-micropython-1.12.0": "1.3.2"
     },
     "dev-packages": {
-        "micropy-cli": "*"
+        "micropy-cli": "*",
+        "mpy-cross": "*"
     },
     "packages": {
         "micropython-ulogging": "*",
-        "micropython-mimetypes": "*",
         "network": "*",
         "picoweb": "*",
-        "ubinascii": "*"
+        "micropython-uasyncio": "*"
     },
     "config": {
         "vscode": true,

@@ -1,6 +1,6 @@
 [MASTER]
-# Loaded Stubs:  esp32-micropython-1.12.0 
-init-hook='import sys;sys.path.insert(1, ".micropy/BradenM-micropy-stubs-ca68fbe/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-9569403/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-27ee48a/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-ca68fbe/stubs");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-9569403/stubs");sys.path.insert(1, ".micropy/backend");'
+# Loaded Stubs:  esp32-micropython-1.11.0  esp32-micropython-1.12.0 
+init-hook='import sys;sys.path.insert(1, ".micropy/BradenM-micropy-stubs-9569403/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-ca68fbe/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-27ee48a/frozen");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-9569403/stubs");sys.path.insert(1, ".micropy/BradenM-micropy-stubs-ca68fbe/stubs");sys.path.insert(1, ".micropy/backend");'
 
 [MESSAGES CONTROL]
 # Only show warnings with the listed confidence levels. Leave empty to show
@@ -19,4 +19,4 @@ confidence=
 
 disable = missing-docstring, line-too-long, trailing-newlines, broad-except, logging-format-interpolation, invalid-name, empty-docstring,
         no-method-argument, assignment-from-no-return, too-many-function-args, unexpected-keyword-arg
-        # the 2nd  line deals with the limited information in the generated stubs.
+        # the 2nd  line deals with the limited information in the generated stubs.nerated stubs.

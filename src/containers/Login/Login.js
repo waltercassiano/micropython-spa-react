@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import TextField from '@material-ui/core/TextField'
 import "./Login.css"
 import { Paper, Grid, Button, Switch, Box } from "@material-ui/core";
-import axios from "axios";
-import { CLIENT_ID, basicAuth } from "../helpers/constants";
+import { AppContextProvider } from "../AppContext";
+import { CONFIG } from "../../config";
+import RestApi from "../../services/restApi";
 
 export default class Login extends Component {
 
+    static contextType = AppContextProvider
     constructor(props) {
         super(props);
         this.state = {
@@ -23,18 +25,19 @@ export default class Login extends Component {
     }
 
     handleDoLogin = () => {
-
-        axios({
-            method: 'get',
-            url: '/api/access-token',
+        RestApi.get({
+            url: CONFIG.BASE_URL_API + CONFIG.RESOURCE.ACCESS_TOKEN,
             headers: {
-                clientId: CLIENT_ID,
-                Authorization: basicAuth(),
                 username: this.state.username,
                 pwd: this.state.pwd
+            }}
+        ).then((response) => {
+            if (response  && response.data && response.data.access_token ) {
+                this.context.storeAction("access_token", response.data.access_token, true);
+                this.context.storeAction("isLogged", true, false);
+                this.context.history.push("home")
             }
         })
-        .then((e) => console.log(e))
         .catch((e) => console.log(e))
     }
 
@@ -45,7 +48,6 @@ export default class Login extends Component {
     }
 
     isButtonEnabled = ({username, pwd}) => {
-        console.log(username, pwd)
         if ((!username || !pwd) || (username.length === 0 || pwd.length === 0)) {
             return true;
         }
@@ -53,10 +55,9 @@ export default class Login extends Component {
         return false;
     }
 
-
     render() {
+        console.log(this.context)
         return (
-
             <Grid item xs={11}>
                 <Paper>
                     <Box p={2}>
@@ -108,3 +109,8 @@ export default class Login extends Component {
     }
 }
 
+// export default function () {
+//     return <AppContextProvider.Consumer>
+//         {({ storeAction, history }) => <Login updateContext={storeAction} history={history} />}
+//     </AppContextProvider.Consumer>
+// }

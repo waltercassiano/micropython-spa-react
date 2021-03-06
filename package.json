@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "compression-webpack-plugin": "^6.0.3",
+    "miragejs": "^0.1.41",
     "react-app-rewired": "^2.1.6"
   }
 }

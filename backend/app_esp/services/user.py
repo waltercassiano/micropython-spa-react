@@ -1,12 +1,12 @@
-from ..entity import User
 import ulogging as logging
+from ..entity import User
 
 class UserService:
     user_model = None
     log = None
     def __init__(self, user_model):
         self.user_model = user_model
-        self.log = logging.getLogger("UserService")
+        self.log = logging.getLogger(__file__)
 
     def user_exists(self, user):
         userDb = self.user_model.getUserById(user_name=user)
@@ -17,7 +17,7 @@ class UserService:
         return False
 
     def auth_user(self, user_name_to_auth, user_password):
-        self.log.info("User to auteticate: %s",  user_name_to_auth)
+        self.log.info("User to auteticate: %s", user_name_to_auth)
 
         if not self.user_exists(user_name_to_auth):
             return False

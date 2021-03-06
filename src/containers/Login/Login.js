@@ -3,9 +3,11 @@ import TextField from '@material-ui/core/TextField'
 import "./Login.css"
 import { Paper, Grid, Button, Switch, Box } from "@material-ui/core";
 import axios from "axios";
-import { CLIENT_ID, basicAuth } from "../helpers/constants";
+import { basicAuth } from "../../helpers/constants";
+import { AppContextProvider } from "../AppContext";
+import { CONFIG } from "../../config";
 
-export default class Login extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
@@ -23,18 +25,23 @@ export default class Login extends Component {
     }
 
     handleDoLogin = () => {
-
         axios({
             method: 'get',
-            url: 'http://10.1.1.12:3000/api/access-token',
+            url: CONFIG.BASE_URL_API + CONFIG.RESOURCE.ACCESS_TOKEN,
             headers: {
-                clientId: CLIENT_ID,
-                Authorization: basicAuth(),
+                clientId: CONFIG.CLIENT_ID,
+                Authorization: basicAuth(CONFIG.CLIENT_ID, CONFIG.CLIENT_SECRET),
                 username: this.state.username,
                 pwd: this.state.pwd
             }
         })
-        .then((e) => console.log(e))
+        .then((response) => {
+            if (response  && response.data && response.data.access_token ) {
+                this.props.updateContext("access_token", response.data.access_token, true);
+                this.props.updateContext("isLogged", true, false);
+                this.props.history.push("home")
+            }
+        })
         .catch((e) => console.log(e))
     }
 
@@ -53,10 +60,8 @@ export default class Login extends Component {
         return false;
     }
 
-
     render() {
         return (
-
             <Grid item xs={11}>
                 <Paper>
                     <Box p={2}>
@@ -108,3 +113,8 @@ export default class Login extends Component {
     }
 }
 
+export default function () {
+    return <AppContextProvider.Consumer>
+        {({ storeAction, history }) => <Login updateContext={storeAction} history={history} />}
+    </AppContextProvider.Consumer>
+}
